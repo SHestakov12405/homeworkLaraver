@@ -28,6 +28,6 @@ class NewsController extends Controller
 
     public function showCategory(int $id)
     {
-        return \view('news.news', ['news' => $this->getNewsCategory($id)]);
+        return \view('news.news', ['news' => $this->getNewsFromCategory($id)]);
     }
 }

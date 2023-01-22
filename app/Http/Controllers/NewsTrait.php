@@ -28,7 +28,7 @@ trait NewsTrait{
         }
 
 
-        $news[$id] = [
+        $news[0] = [
             'id'=> $id,
             'category-id'=>rand(1, 5),
             'title'=> \fake()->jobTitle(),
@@ -47,7 +47,8 @@ trait NewsTrait{
         for ($i=1; $i < $quantityCategory; $i++) { 
             $category[$i]=[
                 'id'=> $i,
-                'name'=> \fake()->jobTitle(),
+                'title'=> \fake()->jobTitle(),
+                'description' => \fake()->text(100)
             ];
         } 
 
@@ -56,7 +57,7 @@ trait NewsTrait{
 
 
 
-    public function getNewsCategory($category):array
+    public function getNewsFromCategory($category):array
     {
         $newsCategory = [];
         $categoryId = $category;
