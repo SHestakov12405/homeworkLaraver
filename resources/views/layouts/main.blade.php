@@ -31,7 +31,7 @@
                 <a class="nav-link" href="{{route('index')}}">О нас</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Контакты</a>
+                <a class="nav-link" href="{{route('contacts.create')}}">Контакты</a>
               </li>
             </ul>
           </div>
@@ -45,6 +45,28 @@
           @yield('content')
         </div>
       </div>
+
+        <aside class="sidebar">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h4 class="card-title">About</h4>
+              <p class="card-text">Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam <a href="#">semper libero</a>, sit amet adipiscing sem neque sed ipsum. </p>
+            </div>
+          </div><!-- /.card -->
+        </aside>
+
+        <aside class="sidebar sidebar-sticky">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h4 class="card-title">Tags</h4>
+              <a class="btn btn-light btn-sm mb-1" href="page-category.html">Journey</a>
+              <a class="btn btn-light btn-sm mb-1" href="page-category.html">Work</a>
+              <a class="btn btn-light btn-sm mb-1" href="page-category.html">Lifestype</a>
+              <a class="btn btn-light btn-sm mb-1" href="page-category.html">Photography</a>
+              <a class="btn btn-light btn-sm mb-1" href="page-category.html">Food &amp; Drinks</a>
+            </div>
+          </div><!-- /.card -->
+        </aside>
     </main>
   
     <div class="site-newsletter">
@@ -72,13 +94,13 @@
   
         <ul class="nav justify-content-center">
           <li class="nav-item">
-            <a class="nav-link" href="#">Политика конфиденциальности</a>
+            <a class="nav-link" href="{{route('admin.news.index')}}">Админка</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Правила</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Обратная связь</a>
+            <a class="nav-link" href="{{route('feedback.create')}}">Обратная связь</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Реклама</a>
@@ -89,7 +111,7 @@
         </ul>
         <div class="copy">
           © news portal 2023<br>
-          Все права защищены
+          Все права защищены<?=$_SERVER['DOCUMENT_ROOT']?>
         </div>
       </div>
     </footer>

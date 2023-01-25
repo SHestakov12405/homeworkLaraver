@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class NewsController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return \view('admin.index');
+        //
     }
 
     /**
@@ -24,7 +23,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return \view('admin.news');
+        return \view('news.feedback');
     }
 
     /**
@@ -35,7 +34,19 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $file = '/app/resources/text.txt';
+
+        // Открываем файл для получения существующего содержимого
+        $current = file_get_contents($file);
+
+        $str = '//' . $request->input('name', '') . '   ' . $request->input('phone', '') . '   ' . $request->input('email', '') . '   ' . $request->input('info', '') . '// \n';
+ 
+        $current .= $str;
+        // Пишем содержимое обратно в файл
+        if (file_put_contents($file, $current)) {
+            return \view('news.contacts');
+        }
+        
     }
 
     /**

@@ -1,7 +1,7 @@
-@extends('layouts.show')
+@extends('layouts.main')
 
 
-@section('show')
+@section('content')
     <div class="col-md-9">
         
         <article class="card mb-4">
