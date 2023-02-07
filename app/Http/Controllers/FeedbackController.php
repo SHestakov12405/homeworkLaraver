@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
@@ -39,14 +40,18 @@ class FeedbackController extends Controller
         // Открываем файл для получения существующего содержимого
         $current = file_get_contents($file);
 
-        $str = '//' . $request->input('name', '') . '   ' . $request->input('phone', '') . '   ' . $request->input('email', '') . '   ' . $request->input('info', '') . '// \n';
- 
+        $str = 'Запрос:' . $request->input('name', '') . '   ' . $request->input('phone', '') . '   ' . $request->input('email', '') . '   ' . $request->input('source', '') . '   ' . $request->input('feedback', '') . "\r\n";
+
         $current .= $str;
-        // Пишем содержимое обратно в файл
-        if (file_put_contents($file, $current)) {
-            return \view('news.contacts');
+        //Сохраняем данный в БД
+        $feedback = new Feedback($request->except('_token'));
+
+        if ($feedback->save()) {
+            if (file_put_contents($file, $current)) {
+                return redirect()->route('contacts.create');
+            }
         }
-        
+
     }
 
     /**

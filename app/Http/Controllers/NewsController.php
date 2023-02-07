@@ -2,29 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News;
 use Illuminate\Http\Request;
+use App\QueryBuilders\NewsQueryBuilder;
 
 class NewsController extends Controller
 {
 
     public function index()
     {
-       // return \view('news.index');
+       return \view('news.index');
     }
 
 
-    public function news()
+    public function news(NewsQueryBuilder $newsQueryBuilder)
     {
-        //return \view('news.news', ['news' => $this->getNews()]);
+        $data = $newsQueryBuilder->getAll();
+        return \view('news.news', ['news' => $data]);
     }
 
-    public function show(int $id)
+    public function show(NewsQueryBuilder $newsQueryBuilder, int $id)
     {
-       // return \view('news.show', ['show' => $this->getNews($id)]);
+        return \view('news.show', ['show' => $newsQueryBuilder->getOneNews($id)]);
     }
 
-    public function showCategory(int $id)
+    public function showCategory(NewsQueryBuilder $newsQueryBuilder, int $id)
     {
-        //return \view('news.news', ['news' => $this->getNewsFromCategory($id)]);
+    // dd($newsQueryBuilder->getNewsByCategory());
+    //dd($newsQueryBuilder->getNewsByCategory());
+        //return \view('news.news', ['news' => [$newsQueryBuilder->getNewsByCategory()]]);
     }
 }

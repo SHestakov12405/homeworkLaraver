@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\News;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\QueryBuilders\NewsQueryBuilder;
+use App\QueryBuilders\CategoriesQueryBuilder;
+use App\QueryBuilders\NewsSourcesDataQueryBuilder;
 
 class NewsController extends Controller
 {
@@ -12,9 +16,9 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(NewsQueryBuilder $newsQueryBuilder)
     {
-        return \view('admin.index');
+        return \view('admin.news', ['newsList' => $newsQueryBuilder->getNewsPagination()]);
     }
 
     /**
@@ -22,9 +26,12 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(CategoriesQueryBuilder $categoriesQueryBuilder, NewsSourcesDataQueryBuilder $newsSourcesDataQueryBuilder)
     {
-        return \view('admin.news');
+        return \view('admin.createNews', [
+            'categories' => $categoriesQueryBuilder->getAll(),
+            'sources' => $newsSourcesDataQueryBuilder->getAll(),
+        ]);
     }
 
     /**
@@ -35,7 +42,11 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $news = new News($request->except('_token'));
+        $news->news_sources_data_id = $request->input('sources');
+        if ($news->save()) {
+            return \redirect()->route('admin.news.index');
+        }
     }
 
     /**
@@ -55,9 +66,13 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(News $news, CategoriesQueryBuilder $categoriesQueryBuilder, NewsSourcesDataQueryBuilder $newsSourcesDataQueryBuilder)
     {
-        //
+        return \view('admin.editNews', [
+            'news' => $news,
+            'categories' => $categoriesQueryBuilder->getAll(),
+            'sources' => $newsSourcesDataQueryBuilder->getAll(),
+        ]);
     }
 
     /**
@@ -67,9 +82,14 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, News $news)
     {
-        //
+        $news = $news->fill($request->except('_token', 'category_ids'));
+        $news->news_sources_data_id = $request->input('sources');
+        if ($news->save()) {
+            $news->categories()->sync((array) $request->input('category_ids'));
+            return \redirect()->route('admin.news.index')->with('success', 'Новость обновлена!');
+        }
     }
 
     /**

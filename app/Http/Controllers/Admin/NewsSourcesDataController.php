@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Contact;
 use Illuminate\Http\Request;
+use App\Models\NewsSourcesData;
+use App\Http\Controllers\Controller;
+use App\QueryBuilders\NewsSourcesDataQueryBuilder;
 
-class ContactController extends Controller
+class NewsSourcesDataController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(NewsSourcesDataQueryBuilder $newsSourcesDataQueryBuilder)
     {
-        //
+        return \view('admin.newsSources', [
+            'newsSourcesList' => $newsSourcesDataQueryBuilder->getNewsSourcesPagination(),
+        ]);
     }
 
     /**
@@ -24,7 +28,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return \view('news.contacts');
+        return \view('admin.createNewsSources');
     }
 
     /**
@@ -35,10 +39,9 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $contact = new Contact($request->except('_token'));
-
-        if ($contact->save()) {
-            return redirect()->route('index');
+        $newsSource = new NewsSourcesData($request->except('_token'));
+        if ($newsSource->save()) {
+            return redirect()->route('admin.newsSources.index');
         }
     }
 
@@ -59,9 +62,11 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(NewsSourcesData $newsSource)
     {
-        //
+        return \view('admin.editNewsSources', [
+            'newsSource' => $newsSource,
+        ]);
     }
 
     /**
@@ -71,9 +76,12 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, NewsSourcesData $newsSource)
     {
-        //
+        $newsSource = $newsSource->fill($request->except('_token'));
+        if ($newsSource->save()) {
+            return \redirect()->route('admin.newsSources.index')->with('success', 'Источник обновлен!');
+        }
     }
 
     /**

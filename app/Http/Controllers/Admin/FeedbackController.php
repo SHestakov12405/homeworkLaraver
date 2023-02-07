@@ -1,20 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Contact;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\QueryBuilders\FeedbacksQueryBuilder;
 
-class ContactController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(FeedbacksQueryBuilder $feedbacksQueryBuilder)
     {
-        //
+        return \view('admin.feedback', [
+            "feedbackList" => $feedbacksQueryBuilder->getFeedbackPagination(),
+        ]);
     }
 
     /**
@@ -24,7 +27,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return \view('news.contacts');
+        //
     }
 
     /**
@@ -35,11 +38,7 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $contact = new Contact($request->except('_token'));
-
-        if ($contact->save()) {
-            return redirect()->route('index');
-        }
+        //
     }
 
     /**

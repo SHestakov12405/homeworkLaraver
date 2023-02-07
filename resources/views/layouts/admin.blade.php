@@ -23,7 +23,7 @@
           <div class="be-right-navbar">
             <ul class="nav navbar-nav float-right be-user-nav">
               <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false">Admin<span class="user-name">Admin</span></a>
-                <div class="dropdown-menu" role="menu">     
+                <div class="dropdown-menu" role="menu">
                   <div class="user-info">
                     <div class="user-name">Túpac Amaru</div>
                     <div class="user-position online">Available</div>
@@ -41,11 +41,11 @@
               <div class="left-sidebar-content">
                 <ul class="sidebar-elements">
                   <li class="divider">Menu</li>
-                  <li class="active"><a href="index.html"><i class="icon mdi mdi-home"></i><span>Главная</span></a></li>
-                  <li><a href="{{route('admin.news.create')}}"><i class="icon mdi mdi-face"></i><span>Новости</span></a></li>
-                  <li><a href="charts.html"><i class="icon mdi mdi-chart-donut"></i><span>Пользователи</span></a></li>
-                  <li><a href="#"><i class="icon mdi mdi-dot-circle"></i><span>Forms</span></a></li>
-                  <li><a href="#"><i class="icon mdi mdi-border-all"></i><span>Tables</span></a></li>
+                  <li class="{{ request()->is('admin/news*') ? 'active' : null }}"><a href="{{route('admin.news.index')}}"><i class="icon mdi mdi-home"></i><span>Новости</span></a></li>
+                  <li class="{{ request()->is('admin/category*') ? 'active' : null }}"><a href="{{route('admin.category.index')}}"><i class="icon mdi mdi-chart-donut"></i><span>Категории</span></a></li>
+                  <li class="{{ request()->is('admin/contact*') ? 'active' : null }}"><a href="{{route('admin.contact.index')}}"><i class="icon mdi mdi-dot-circle"></i><span>Контакты</span></a></li>
+                  <li class="{{ request()->is('admin/feedback*') ? 'active' : null }}"><a href="{{route('admin.feedback.index')}}"><i class="icon mdi mdi-border-all"></i><span>Запрос на информацию</span></a></li>
+                  <li class="{{ request()->is('admin/newsSources*') ? 'active' : null }}"><a href="{{route('admin.newsSources.index')}}"><i class="icon mdi mdi-border-all"></i><span>Источники новостей</span></a></li>
                 </ul>
               </div>
             </div>

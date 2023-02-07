@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('news', function (Blueprint $table) {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 191);
-            $table->string('author')->default('Админ');
-            $table->enum('status', ['draft', 'active', 'blocked']);
-            $table->text('description')->nullable();
-            $table->foreignId('news_sources_data_id')->references('id')->on('news_sources_data')->onDelete('cascade');
+            $table->string('name', 191);
+            $table->string('phone', 11);
+            $table->text('feedback');
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('news');
+        Schema::dropIfExists('contacts');
     }
 };

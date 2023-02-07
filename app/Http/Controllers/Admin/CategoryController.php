@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Contact;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\QueryBuilders\CategoriesQueryBuilder;
 
-class ContactController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(CategoriesQueryBuilder $categoriesQueryBuilder)
     {
-        //
+        return \view('admin.category', [
+            'categoryList' => $categoriesQueryBuilder->getCategoryPagination(),
+        ]);
     }
 
     /**
@@ -24,7 +28,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return \view('news.contacts');
+        return \view('admin.createCategory');
     }
 
     /**
@@ -35,10 +39,9 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $contact = new Contact($request->except('_token'));
-
-        if ($contact->save()) {
-            return redirect()->route('index');
+        $category = new Category($request->except('_token'));
+        if ($category->save()) {
+            return \redirect()->route('admin.category.index');
         }
     }
 
@@ -59,9 +62,11 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+        return \view('admin.editCategory', [
+            'category' => $category,
+        ]);
     }
 
     /**
@@ -71,9 +76,12 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $category = $category->fill($request->except('_token'));
+        if ($category->save()) {
+            return \redirect()->route('admin.category.index')->with('success', 'Категория обновлена!');
+        }
     }
 
     /**

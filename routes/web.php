@@ -1,11 +1,15 @@
 <?php
 
-use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\Admin\NewsController as NewsAdminController;
-use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\Admin\NewsSourcesDataController as NewsSourcesDataAdminController;
+use App\Http\Controllers\Admin\NewsController as NewsAdminController;
+use App\Http\Controllers\Admin\ContactController as ContactAdminController;
+use App\Http\Controllers\Admin\CategoryController as CategoryAdminController;
+use App\Http\Controllers\Admin\FeedbackController as FeedbackAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +30,11 @@ Route::get('/', function () {
 Route::prefix('admin')->group(function () {
     Route::name('admin.')->group(function () {
         Route::resource('news', NewsAdminController::class);
+        Route::resource('category', CategoryAdminController::class);
+        Route::resource('contact', ContactAdminController::class);
+        Route::resource('feedback', FeedbackAdminController::class);
+        Route::resource('newsSources', NewsSourcesDataAdminController::class);
+
     });
 });
 

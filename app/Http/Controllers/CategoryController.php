@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
+use App\QueryBuilders\CategoriesQueryBuilder;
 
 class CategoryController extends Controller
 {
 
-    public function index()
+    public function index(CategoriesQueryBuilder $categoriesQueryBuilder)
     {
-        //return \view('news.category', ['category' => $this->getCategory()]);
+        $data = $categoriesQueryBuilder->getAll();
+        return \view('news.category', ['category' => $data]);
     }
 }

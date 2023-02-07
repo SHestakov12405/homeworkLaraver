@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Contact;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\QueryBuilders\ContactsQueryBuilder;
 
 class ContactController extends Controller
 {
@@ -12,9 +13,11 @@ class ContactController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ContactsQueryBuilder $contactsQueryBuilder)
     {
-        //
+        return \view('admin.contact', [
+            'contactList' => $contactsQueryBuilder->getContactPagination(),
+        ]);
     }
 
     /**
@@ -24,7 +27,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return \view('news.contacts');
+        //
     }
 
     /**
@@ -35,11 +38,7 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $contact = new Contact($request->except('_token'));
-
-        if ($contact->save()) {
-            return redirect()->route('index');
-        }
+        //
     }
 
     /**

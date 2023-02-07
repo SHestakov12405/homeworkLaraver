@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class NewsSourcesData extends Model
+class Feedback extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
-        'id',
         'name',
-        'description',
+        'phone',
+        'email',
+        'source',
+        'feedback',
     ];
 }
