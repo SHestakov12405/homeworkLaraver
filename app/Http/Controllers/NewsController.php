@@ -17,7 +17,7 @@ class NewsController extends Controller
 
     public function news(NewsQueryBuilder $newsQueryBuilder)
     {
-        $data = $newsQueryBuilder->getAll();
+        $data = $newsQueryBuilder->getNewsPagination(32);
         return \view('news.news', ['news' => $data]);
     }
 

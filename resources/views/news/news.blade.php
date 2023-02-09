@@ -22,4 +22,5 @@
         </article><!-- /.card -->
     </div>
 @endforeach
+{{$news->links()}}
 @endsection

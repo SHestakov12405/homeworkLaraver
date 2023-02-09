@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use App\Http\Requests\Contact\CreateRequest;
 
 class ContactController extends Controller
 {
@@ -33,11 +34,11 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $contact = new Contact($request->except('_token'));
+        $contact = Contact::create($request->validated());
 
-        if ($contact->save()) {
+        if ($contact) {
             return redirect()->route('index');
         }
     }

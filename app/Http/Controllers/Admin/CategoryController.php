@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\EditRequest;
+use App\Http\Requests\Category\CreateRequest;
 use App\QueryBuilders\CategoriesQueryBuilder;
 
 class CategoryController extends Controller
@@ -37,10 +39,10 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $category = new Category($request->except('_token'));
-        if ($category->save()) {
+        $category = Category::create($request->validated());
+        if ($category) {
             return \redirect()->route('admin.category.index');
         }
     }
@@ -76,9 +78,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(EditRequest $request, Category $category)
     {
-        $category = $category->fill($request->except('_token'));
+        $category = $category->fill($request->validated());
         if ($category->save()) {
             return \redirect()->route('admin.category.index')->with('success', 'Категория обновлена!');
         }

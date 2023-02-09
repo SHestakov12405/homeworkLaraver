@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Feedback;
 use Illuminate\Http\Request;
+use App\Http\Requests\Feedback\CreateRequest;
 
 class FeedbackController extends Controller
 {
@@ -33,20 +34,20 @@ class FeedbackController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
         $file = '/app/resources/text.txt';
 
         // Открываем файл для получения существующего содержимого
         $current = file_get_contents($file);
 
-        $str = 'Запрос:' . $request->input('name', '') . '   ' . $request->input('phone', '') . '   ' . $request->input('email', '') . '   ' . $request->input('source', '') . '   ' . $request->input('feedback', '') . "\r\n";
+        $str = 'Запрос:' . $request->validated('name') . '   ' . $request->validated('phone') . '   ' . $request->validated('email') . '   ' . $request->validated('source') . '   ' . $request->validated('feedback') . "\r\n";
 
         $current .= $str;
-        //Сохраняем данный в БД
-        $feedback = new Feedback($request->except('_token'));
+        //Сохраняем данные в БД
+        $feedback = Feedback::create($request->validated());
 
-        if ($feedback->save()) {
+        if ($feedback) {
             if (file_put_contents($file, $current)) {
                 return redirect()->route('contacts.create');
             }

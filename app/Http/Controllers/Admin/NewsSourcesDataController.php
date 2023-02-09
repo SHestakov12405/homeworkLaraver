@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\NewsSourcesData;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsSourcesData\EditRequest;
 use App\QueryBuilders\NewsSourcesDataQueryBuilder;
+use App\Http\Requests\NewsSourcesData\CreatedRequest;
 
 class NewsSourcesDataController extends Controller
 {
@@ -37,10 +39,10 @@ class NewsSourcesDataController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatedRequest $request)
     {
-        $newsSource = new NewsSourcesData($request->except('_token'));
-        if ($newsSource->save()) {
+        $newsSource = NewsSourcesData::create($request->validated());
+        if ($newsSource) {
             return redirect()->route('admin.newsSources.index');
         }
     }
@@ -76,9 +78,9 @@ class NewsSourcesDataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, NewsSourcesData $newsSource)
+    public function update(EditRequest $request, NewsSourcesData $newsSource)
     {
-        $newsSource = $newsSource->fill($request->except('_token'));
+        $newsSource = $newsSource->fill($request->validated());
         if ($newsSource->save()) {
             return \redirect()->route('admin.newsSources.index')->with('success', 'Источник обновлен!');
         }

@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Models\News;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rules\Enum;
+use App\Http\Requests\News\EditRequest;
 use App\QueryBuilders\NewsQueryBuilder;
+use App\Http\Requests\News\CreateRequest;
 use App\QueryBuilders\CategoriesQueryBuilder;
 use App\QueryBuilders\NewsSourcesDataQueryBuilder;
 
@@ -40,11 +43,12 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $news = new News($request->except('_token'));
-        $news->news_sources_data_id = $request->input('sources');
+        $news = new News($request->except('sources'));
+        $news->sources()->associate($request->validated('sources'));
         if ($news->save()) {
+            $news->categories()->sync($request->getCategoryIds());
             return \redirect()->route('admin.news.index');
         }
     }
@@ -82,13 +86,13 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(EditRequest $request, News $news)
     {
-        $news = $news->fill($request->except('_token', 'category_ids'));
-        $news->news_sources_data_id = $request->input('sources');
-        if ($news->save()) {
-            $news->categories()->sync((array) $request->input('category_ids'));
-            return \redirect()->route('admin.news.index')->with('success', 'Новость обновлена!');
+        $news = $news->fill($request->except('sources'));
+        $news->sources()->associate($request->validated('sources'));
+        if ($news) {
+            $news->categories()->sync($request->getCategoryIds());
+             return \redirect()->route('admin.news.index')->with('success', 'Новость обновлена!');
         }
     }
 

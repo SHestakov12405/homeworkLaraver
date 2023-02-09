@@ -20,7 +20,6 @@ class News extends Model
         'description',
         'author',
         'status',
-        'news_sources_data_id',
         'created_at'
     ];
         /**
