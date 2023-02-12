@@ -5,11 +5,14 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\Admin\NewsSourcesDataController as NewsSourcesDataAdminController;
+use App\Http\Controllers\Admin\UserController as UserAdminController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\NewsController as NewsAdminController;
+use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\ContactController as ContactAdminController;
 use App\Http\Controllers\Admin\CategoryController as CategoryAdminController;
 use App\Http\Controllers\Admin\FeedbackController as FeedbackAdminController;
+use App\Http\Controllers\Admin\NewsSourcesDataController as NewsSourcesDataAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,17 +29,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::middleware(['auth'])->group(function () {
 
-Route::prefix('admin')->group(function () {
-    Route::name('admin.')->group(function () {
-        Route::resource('news', NewsAdminController::class);
-        Route::resource('category', CategoryAdminController::class);
-        Route::resource('contact', ContactAdminController::class);
-        Route::resource('feedback', FeedbackAdminController::class);
-        Route::resource('newsSources', NewsSourcesDataAdminController::class);
+    Route::get('/logout', [LoginController::class, 'logout'])->name('account.logout');
+    Route::get('/account', AccountController::class)->name('account');
 
+
+    Route::prefix('admin' ,['middleware' => 'is.admin'])->group(function () {
+        Route::name('admin.')->group(function () {
+
+            Route::resource('news', NewsAdminController::class);
+            Route::resource('category', CategoryAdminController::class);
+            Route::resource('contact', ContactAdminController::class);
+            Route::resource('feedback', FeedbackAdminController::class);
+            Route::resource('newsSources', NewsSourcesDataAdminController::class);
+            Route::resource('user', UserAdminController::class);
+
+        });
     });
 });
+
 
 
 Route::prefix('')->group(function () {
@@ -54,3 +66,7 @@ Route::prefix('')->group(function () {
 
     Route::resource('feedback', FeedbackController::class);
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

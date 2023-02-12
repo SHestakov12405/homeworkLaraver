@@ -25,9 +25,8 @@
               <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false">Admin<span class="user-name">Admin</span></a>
                 <div class="dropdown-menu" role="menu">
                   <div class="user-info">
-                    <div class="user-name">Túpac Amaru</div>
-                    <div class="user-position online">Available</div>
-                  </div><a class="dropdown-item" href="pages-profile.html"><span class="icon mdi mdi-face"></span>Account</a><a class="dropdown-item" href="#"><span class="icon mdi mdi-settings"></span>Settings</a><a class="dropdown-item" href="pages-login.html"><span class="icon mdi mdi-power"></span>Logout</a>
+                    <div class="user-name">{{Auth::user()->name}}</div>
+                  </div><a class="dropdown-item" href="{{route("account.logout")}}"><span class="icon mdi mdi-power"></span>Выход</a>
                 </div>
               </li>
             </ul>
@@ -46,6 +45,7 @@
                   <li class="{{ request()->is('admin/contact*') ? 'active' : null }}"><a href="{{route('admin.contact.index')}}"><i class="icon mdi mdi-dot-circle"></i><span>Контакты</span></a></li>
                   <li class="{{ request()->is('admin/feedback*') ? 'active' : null }}"><a href="{{route('admin.feedback.index')}}"><i class="icon mdi mdi-border-all"></i><span>Запрос на информацию</span></a></li>
                   <li class="{{ request()->is('admin/newsSources*') ? 'active' : null }}"><a href="{{route('admin.newsSources.index')}}"><i class="icon mdi mdi-border-all"></i><span>Источники новостей</span></a></li>
+                  <li class="{{ request()->is('admin/user*') ? 'active' : null }}"><a href="{{route('admin.user.index')}}"><i class="icon mdi mdi-border-all"></i><span>Пользователи</span></a></li>
                 </ul>
               </div>
             </div>

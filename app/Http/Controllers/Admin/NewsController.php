@@ -90,7 +90,7 @@ class NewsController extends Controller
     {
         $news = $news->fill($request->except('sources'));
         $news->sources()->associate($request->validated('sources'));
-        if ($news) {
+        if ($news->save()) {
             $news->categories()->sync($request->getCategoryIds());
              return \redirect()->route('admin.news.index')->with('success', 'Новость обновлена!');
         }
