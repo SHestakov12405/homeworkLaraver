@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use ContactsQueryBuilder;
 use FeedbacksQueryBuilder;
+use App\Services\ParserService;
+use App\Services\SocialService;
+use App\Services\Contracts\Parser;
+use App\Services\Contracts\Social;
 use App\QueryBuilders\QueryBuilder;
 use Illuminate\Pagination\Paginator;
 use App\QueryBuilders\NewsQueryBuilder;
@@ -25,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(QueryBuilder::class, FeedbacksQueryBuilder::class);
         $this->app->bind(QueryBuilder::class, ContactsQueryBuilder::class);
         $this->app->bind(QueryBuilder::class, NewsSourcesDataQueryBuilder::class);
+
+        //Service
+        $this->app->bind(Parser::class, ParserService::class);
+        $this->app->bind(Social::class, SocialService::class);
     }
 
     /**

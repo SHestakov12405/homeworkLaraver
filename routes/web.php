@@ -5,9 +5,11 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\Admin\UserController as UserAdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\ParserController;
+use App\Http\Controllers\Social\SocialController;
 use App\Http\Controllers\Admin\NewsController as NewsAdminController;
+use App\Http\Controllers\Admin\UserController as UserAdminController;
 use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\ContactController as ContactAdminController;
 use App\Http\Controllers\Admin\CategoryController as CategoryAdminController;
@@ -45,6 +47,8 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('newsSources', NewsSourcesDataAdminController::class);
             Route::resource('user', UserAdminController::class);
 
+            Route::get('/parser', ParserController::class)->name('parser');
+
         });
     });
 });
@@ -70,3 +74,10 @@ Route::prefix('')->group(function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::prefix('', ['middleware' => 'guest'])->group(function () {
+
+    Route::get('/auth/redirect/{driver}', [SocialController::class, 'redirect'])->where('driver', '\w+')->name('socail.auth.redirect');
+
+    Route::get('/auth/callback/{driver}', [SocialController::class, 'callback'])->where('driver', '\w+');
+});
