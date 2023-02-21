@@ -14,7 +14,7 @@
             </a>
         </header>
         <a href="{{route('news.show', ['id'=> $value['id']])}}">
-            <img class="card-img" src="img/articles/22.jpg" alt="" height="150px">
+            <img class="card-img" src="{{Storage::disk('public')->url($value['image'])}}" alt="" height="150px">
         </a>
         <div class="card-body">
             <p class="card-text">{{$value['description']}}</p>

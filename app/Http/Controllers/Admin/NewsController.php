@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\News;
 use Illuminate\Http\Request;
+use App\Services\UploadFileService;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rules\Enum;
 use App\Http\Requests\News\EditRequest;
 use App\QueryBuilders\NewsQueryBuilder;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\News\CreateRequest;
 use App\QueryBuilders\CategoriesQueryBuilder;
 use App\QueryBuilders\NewsSourcesDataQueryBuilder;
@@ -86,9 +88,17 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(EditRequest $request, News $news)
+    public function update(EditRequest $request, News $news, UploadFileService $uploadedFile)
     {
         $news = $news->fill($request->except('sources'));
+
+        if ($request->hasFile('image')) {
+            $news->image = $uploadedFile->uploadImage($request->file('image'));
+        }elseif($news->image !== null) {
+                Storage::disk('public')->delete($news->image);
+                $news->image = null;
+        }
+
         $news->sources()->associate($request->validated('sources'));
         if ($news->save()) {
             $news->categories()->sync($request->getCategoryIds());

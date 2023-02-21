@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+    <a href="{{route('admin.parser')}}">Парсить новости</a>
     <h2 class="title"><a href="{{route('admin.news.create')}}">Добавить новость</a></h2>
     <table class="table table-striped table-hover table-fw-widget dataTable no-footer" id="table1" role="grid">
         <thead>

@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('yandex_id')->nullable();
+        Schema::table('news_sources_data', function (Blueprint $table) {
+            $table->string('url');
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('yandex_id');
+        Schema::table('news_sources_data', function (Blueprint $table) {
+            $table->dropColumn('url');
         });
     }
 };

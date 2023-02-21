@@ -9,6 +9,7 @@ use App\Services\SocialService;
 use App\Services\Contracts\Parser;
 use App\Services\Contracts\Social;
 use App\QueryBuilders\QueryBuilder;
+use App\Services\UploadFileService;
 use Illuminate\Pagination\Paginator;
 use App\QueryBuilders\NewsQueryBuilder;
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         //Service
         $this->app->bind(Parser::class, ParserService::class);
         $this->app->bind(Social::class, SocialService::class);
+        $this->app->bind(UploadFileService::class);
     }
 
     /**

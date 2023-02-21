@@ -12,7 +12,7 @@
         @endforeach
     @endif
 
-    <form method="post" action="{{route('admin.news.update', ['news'=>$news])}}">
+    <form method="post" action="{{route('admin.news.update', ['news'=>$news])}}" enctype="multipart/form-data">
         @csrf
         @method('put')
         <div class="col-md-12">
@@ -56,14 +56,14 @@
                   </div>
                   <div class="form-group row">
                     <label class="col-12 col-sm-3 col-form-label text-sm-right" for="description">Текст</label>
-                    <div class="col-12 col-sm-8 col-lg-6">
-                      <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description">{{$news['description']}}</textarea>
+                    <div class="col-12 col-sm-8 col-lg-6" >
+                      <textarea name="description" id="description" >{{$news['description']}}</textarea>
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputDisabled3">Фото</label>
+                    <label class="col-12 col-sm-3 col-form-label text-sm-right" for="image">Изображение</label>
                     <div class="col-12 col-sm-8 col-lg-6">
-                      <input class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo" type="text" value="{{$news['image']}}">
+                      <input class="form-control @error('image') is-invalid @enderror" id="image" name="image" type="file">
                     </div>
                   </div>
                   <div class="form-group row">
@@ -87,6 +87,12 @@
             </div>
           </div>
     </form>
-
-
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#description' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
 @endsection
+

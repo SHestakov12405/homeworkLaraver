@@ -30,4 +30,10 @@ final class NewsSourcesDataQueryBuilder extends QueryBuilder {
         return $this->model->where('id', $id)->get();
     }
 
+    public function getUrl()
+    {
+        $url = $this->model->select("id", "url")->get();
+        return $url->toArray();
+    }
+
 }

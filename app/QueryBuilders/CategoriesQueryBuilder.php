@@ -20,6 +20,11 @@ final class CategoriesQueryBuilder extends QueryBuilder {
         return $this->model->get();
     }
 
+    public function getOneTitle(string $title)
+    {
+        return $this->model->where('title', '=', $title)->get();
+    }
+
     public function getCategoryPagination(int $quan=10)
     {
         return $this->model->paginate($quan);
